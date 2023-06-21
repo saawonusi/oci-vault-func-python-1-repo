@@ -1,6 +1,4 @@
-import logging
-import oci
-import base64
+# utility function to get secrets from oci vault
 import logging
 import oci
 import base64
