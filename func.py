@@ -1,6 +1,7 @@
 import logging
 import oci
 import base64
+from logging import handlers
 
 # Replace secret_id value below with the ocid of your secret
 secret_id = "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaakujrcpia636am4piaqlzx3x6rhfsavauh5e27yopulvjfbngplca"
