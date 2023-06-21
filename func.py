@@ -33,6 +33,10 @@ def read_secret_value(secret_client, secret_id):
 secret_contents = read_secret_value(secret_client, secret_id)
 print(format(secret_contents))
 
+def handler(ctx, data: io.BytesIO = None):
+    ocivault_secret = read_secret_value(secret_client, secret_id)
+    print(format(ocivault_secret))
+
 """
 import io
 import json
