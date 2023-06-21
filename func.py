@@ -17,6 +17,7 @@ secret_client = oci.secrets.SecretsClient(config={}, signer=signer)
 # Retrieve secret
 def read_secret_value(secret_client, secret_id):
     response = secret_client.get_secret_bundle(secret_id)
+    logging.getLogger().info("entered read_secret_value handler")
     try:
         base64_Secret_content = response.data.secret_bundle_content.content
         base64_secret_bytes = base64_Secret_content.encode('ascii')
