@@ -22,9 +22,9 @@ def read_secret_value(secret_client, secret_id):
     logging.getLogger().info("entered read_secret_value handler")
     try:
         base64_Secret_content = response.data.secret_bundle_content.content
-        base64_secret_bytes = base64_Secret_content.encode('ascii')
+        base64_secret_bytes = base64_Secret_content.encode('utf-8')
         base64_message_bytes = base64.b64decode(base64_secret_bytes)
-        secret_content = base64_message_bytes.decode('ascii')
+        secret_content = base64_message_bytes.decode('utf-8')
     except Exception as ex:
         logging.getLogger().error("read_secret_value: Failed to get Secret" + str(ex))
         raise
