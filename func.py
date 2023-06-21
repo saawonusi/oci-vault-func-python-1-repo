@@ -1,4 +1,4 @@
-"""import logging
+import logging
 import oci
 import base64
 
@@ -29,8 +29,9 @@ def read_secret_value(secret_client, secret_id):
 
 # Print secret
 secret_contents = read_secret_value(secret_client, secret_id)
-print(format(secret_contents))"""
+print(format(secret_contents))
 
+"""
 import io
 import json
 import logging
@@ -52,4 +53,4 @@ def handler(ctx, data: io.BytesIO = None):
             {"message": "Hello {0}".format(name)}),
         headers={"Content-Type": "application/json"}
     )
-
+"""
