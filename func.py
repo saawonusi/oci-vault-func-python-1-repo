@@ -1,42 +1,28 @@
-# utility function to get secrets from oci vault
+# utility function to get secret from oci vault
 import logging
-import io
 import oci
 import base64
 
-# Replace secret_id value below with the ocid of your secret
-secret_id = "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaakujrcpia636am4piaqlzx3x6rhfsavauh5e27yopulvjfbngplca"
+# replace secret_id value below with the ocid of your secret
+secret_id = "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaakujrcpiawx73hpzl5ijy4mocmtlrbjyywl3dqherp3mr3kp6p4vq"
 
-# By default this will hit the auth service in the region the instance is running.
-signer = oci.auth.signers.get_resource_principals_signer()
-
-# In the base case, configuration does not need to be provided as the region and tenancy are obtained from the InstancePrincipalsSecurityTokenSigner
-identity_client = oci.identity.IdentityClient(config={}, signer=signer)
-
-# Get instance principal context
-secret_client = oci.secrets.SecretsClient(config={}, signer=signer)
-
-# Retrieve secret
-def read_secret_value(secret_client, secret_id):
-    response = secret_client.get_secret_bundle(secret_id)
-    logging.getLogger().info("entered read_secret_value handler")
-    try:
-        base64_Secret_content = response.data.secret_bundle_content.content
-        base64_secret_bytes = base64_Secret_content.encode('utf-8')
-        base64_message_bytes = base64.b64decode(base64_secret_bytes)
-        secret_content = base64_message_bytes.decode('utf-8')
+# retrieve secret
+def get_secret(secret_id):
+    # by default this will hit the auth service in the region the instance is running.
+    signer = oci.auth.signers.get_resource_principals_signer()
+    try
+        # get instance principal context
+        secret_client = oci.secrets.SecretsClient({}, signer=signer)
+        secret_content = secret_client.get_secret_bundle(secret_id).data.secret_bundle_content.encode('utf-8')
+        decrypted_secret_content = base64.b64decode(secret_content).decode('utf-8')
     except Exception as ex:
-        logging.getLogger().error("read_secret_value: Failed to get Secret" + str(ex))
+        logging.getLogger().error("get_secret: failed to get secret" + str(ex))
         raise
-    return secret_content
-
-# Print secret
-secret_contents = read_secret_value(secret_client, secret_id)
-print(format(secret_contents))
-
+    return decrypted_secret_content
 
 def handler(ctx, data: io.BytesIO = None):
-    ocivault_secret = read_secret_value(secret_client, secret_id)
+    logging.getLogger().info("entered get_secret handler")
+    ocivault_secret = get_secret(secret_id)
     print(format(ocivault_secret))
 
 """
