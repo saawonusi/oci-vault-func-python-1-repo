@@ -1,5 +1,6 @@
 # utility function to get secrets from oci vault
 import logging
+import io
 import oci
 import base64
 
