@@ -15,7 +15,8 @@ def get_secret(secret_id):
         # get instance principal context
         secret_client = oci.secrets.SecretsClient({}, signer=signer)
         secret_content = secret_client.get_secret_bundle(secret_id).data.secret_bundle_content.content.encode('utf-8')
-        decrypted_secret_content = base64.b64decode(secret_content).decode('utf-8')
+        #decrypted_secret_content = base64.b64decode(secret_content).decode('utf-8')
+	decrypted_secret_content = base64.decodebytes(secret_content).decode('utf-8')
     except Exception as ex:
         logging.getLogger().error("get_secret: failed to get secret" + str(ex))
         raise
