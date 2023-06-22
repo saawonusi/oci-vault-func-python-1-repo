@@ -15,7 +15,12 @@ def get_secret(secret_id):
         # get instance principal context
         secret_client = oci.secrets.SecretsClient({}, signer=signer)
         secret_content = secret_client.get_secret_bundle(secret_id).data.secret_bundle_content.content.encode('utf-8')
+        ## add padding to secret_content
+        while len(secret_content) % 4 != 0:
+            secret_content += "="
+        # decode and decrypt the secret_content
         decrypted_secret_content = base64.b64decode(secret_content).decode('utf-8')
+        # decrypted_secret_content = base64.decodebytes(secret_content).decode('utf-8')
     except Exception as ex:
         logging.getLogger().error("get_secret: failed to get secret" + str(ex))
         raise
@@ -25,6 +30,7 @@ def handler(ctx, data: io.BytesIO = None):
     logging.getLogger().info("entered get_secret handler")
     ocivault_secret = get_secret(secret_id)
     print(format(ocivault_secret))
+
 """
 import io
 import json
