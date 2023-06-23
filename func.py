@@ -12,7 +12,7 @@ vault_id = "ocid1.vault.oc1.uk-london-1.d5sitxohaaa6k.abwgiljtbl5pupmmj3haubob3h
 def get_secret(secret_name,vault_id):
     # by default this will hit the auth service in the region the instance is running.
     signer = oci.auth.signers.get_resource_principals_signer()
-    decrypted_secret_content = ""
+    # decrypted_secret_content = ""
     try:
         # get instance principal context
         secret_client = oci.secrets.SecretsClient({}, signer=signer)
