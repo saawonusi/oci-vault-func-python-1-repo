@@ -4,7 +4,7 @@ import io
 import oci
 import base64
 
-secret_name = "ipaas-client-secret-1"
+secret_name = "ipaas-client-secret-2"
 # replace vault_id value below with the ocid of your vault
 vault_id = "ocid1.vault.oc1.uk-london-1.d5sitxohaaa6k.abwgiljtbl5pupmmj3haubob3hb475qozryypozwtr7ukjw4wa46qvcmocya"
 
