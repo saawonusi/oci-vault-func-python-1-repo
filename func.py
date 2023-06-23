@@ -11,16 +11,13 @@ secret_id = "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaakujrcpiawx73hpzl5ijy4mocm
 def get_secret(secret_id):
     # by default this will hit the auth service in the region the instance is running.
     signer = oci.auth.signers.get_resource_principals_signer()
+    decrypted_secret_content = ""
     try:
         # get instance principal context
         secret_client = oci.secrets.SecretsClient({}, signer=signer)
         secret_content = secret_client.get_secret_bundle(secret_id).data.secret_bundle_content.content.encode('utf-8')
-        ## add padding to secret_content
-        while len(secret_content) % 4 != 0:
-            secret_content += "="
         # decode and decrypt the secret_content
         decrypted_secret_content = base64.b64decode(secret_content).decode('utf-8')
-        # decrypted_secret_content = base64.decodebytes(secret_content).decode('utf-8')
     except Exception as ex:
         logging.getLogger().error("get_secret: failed to get secret" + str(ex))
         raise
